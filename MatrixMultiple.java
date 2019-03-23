@@ -1,22 +1,27 @@
-﻿import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class MatrixMultiple {
-	public static final int n = 3;
-	public static ArrayList<Pair> matrixs = new ArrayList<Pair>();
+	public static final int n = 3;//define the number of matrices
+	public static ArrayList<Pair> matrixs = new ArrayList<Pair>();//stored the matrixs
 	public static int sum = 0;
+	/*keep track of the order in which you multiply in the function devideConquer*/
 	public static int[][] path = new int[n][n];
-	public static int[][] result = new int[n][n];
+	public static int[][] result = new int[n][n]; 
 	public static final int infty = Integer.MAX_VALUE;
 
 	public static void main(String[] args) {
 		init();
 		devideConquer();
-		System.out.println(result[0][n - 1]);
+		System.out.println("the least number of multiplications:");
+		System.out.println("devideConquer:"+ result[0][n - 1]);
 		greedy();
 	}
 
 	/**
-	 * 初始化数据
+	 * initial the data
+	 * automatically generate a certain number of matrices
+	 * 
+	 * @author ZhangYue
 	 */
 	static void init() {
 		sum = 0;
@@ -25,7 +30,6 @@ public class MatrixMultiple {
 		for (int i = 0; i < n + 1; i++) {
 			x = (int) (Math.random() * 13 + 3);
 			nums.add(x);
-			//System.out.print(x + " ");
 		}
 		for (int i = 0; i < n; i++) {
 			Pair temPair = new Pair(nums.get(i), nums.get(i + 1));
@@ -40,9 +44,9 @@ public class MatrixMultiple {
 	}
 
 	/**
-	 * 分治算法求最优解
+	 * devideAndConquer
 	 * 
-	 * @return 矩阵连乘的最优解所需乘法次数
+	 * @author ZhangYue
 	 */
 	static void devideConquer() {
 		sum = 0;
@@ -64,7 +68,7 @@ public class MatrixMultiple {
 					int num = result[i][k] + result[k + 1][j] + temp;
 					if (num < result[i][j]) {
 						result[i][j] = num;
-						path[i][j] = k;//用于记录运算的先后顺序
+						path[i][j] = k;
 					}
 				}
 			}
@@ -72,7 +76,10 @@ public class MatrixMultiple {
 	}
 	
 	/**
-	 * 贪心算法
+	 * greedy algorithm
+	 * the least number of multiplications
+	 *
+	 * @author ZhangYue
 	 */
 	static void greedy() {
 		sum = 0;
@@ -80,7 +87,7 @@ public class MatrixMultiple {
 		int nn = tempPairs.size();
 		int min = infty;
 		int tempNum = 0;
-		int index = 0;//记录每次循环中需要先计算的矩阵下标
+		int index = 0;
 		
 		while(nn > 1) {
 			min = infty;
@@ -99,7 +106,7 @@ public class MatrixMultiple {
 			nn = tempPairs.size();
 			sum += min;
 		}
-		System.out.println(sum);
+		System.out.println("greedy:"+sum);
 	}
 }
 
